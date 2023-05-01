@@ -17,6 +17,7 @@ class Quizzler extends StatelessWidget {
           ),
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -29,6 +30,21 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [
+    const Icon(
+      color: Colors.green,
+      Icons.check,
+    ),
+    const Icon(
+      color: Colors.red,
+      Icons.check,
+    ),
+    const Icon(
+      color: Colors.red,
+      Icons.check,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -59,7 +75,13 @@ class _QuizPageState extends State<QuizPage> {
               width: 2,
               color: Colors.green,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {});
+                  scoreKeeper.add(const Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ));
+                },
                 child: const Text(
                   "True",
                   style: TextStyle(
@@ -79,7 +101,15 @@ class _QuizPageState extends State<QuizPage> {
               width: 2,
               color: Colors.red,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {});
+                  scoreKeeper.add(
+                    const Icon(
+                      Icons.check,
+                      color: Colors.red,
+                    ),
+                  );
+                },
                 child: const Text(
                   "False",
                   style: TextStyle(
@@ -91,6 +121,12 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+          child: Row(
+            children: scoreKeeper,
+          ),
+        )
       ],
     );
   }

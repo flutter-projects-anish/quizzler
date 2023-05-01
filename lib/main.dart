@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const Quizzler());
+void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
-  const Quizzler({super.key});
+  const Quizzler({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey,
         body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: QuizPage(),
-          ),
+          minimum: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: QuizPage(),
         ),
       ),
       debugShowCheckedModeBanner: false,
@@ -23,27 +21,20 @@ class Quizzler extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  QuizPage({Key? key}) : super(key: key);
 
   @override
   State<QuizPage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [
-    const Icon(
-      color: Colors.green,
-      Icons.check,
-    ),
-    const Icon(
-      color: Colors.red,
-      Icons.check,
-    ),
-    const Icon(
-      color: Colors.red,
-      Icons.check,
-    ),
+  List<Icon> scoreKeeper = [];
+  List<String> questions = [
+    'ganesh surname is adhikari',
+    'anish surname is gc',
+    'krishna\'s surname is chaudahry'
   ];
+  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +42,15 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Expanded(
+        Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(
-                'this is where the code will go.',
+                questions[questionNumber % questions.length],
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20.0,
                   color: Colors.white,
                 ),
@@ -76,7 +67,9 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.green,
               child: TextButton(
                 onPressed: () {
-                  setState(() {});
+                  setState(() {
+                    questionNumber++;
+                  });
                   scoreKeeper.add(const Icon(
                     Icons.check,
                     color: Colors.green,
@@ -102,10 +95,12 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.red,
               child: TextButton(
                 onPressed: () {
-                  setState(() {});
+                  setState(() {
+                    questionNumber++;
+                  });
                   scoreKeeper.add(
                     const Icon(
-                      Icons.check,
+                      Icons.close,
                       color: Colors.red,
                     ),
                   );

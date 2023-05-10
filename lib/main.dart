@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'question.dart';
+import 'quiz_brain.dart';
 
+QuizBrain quizBrain = QuizBrain();
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
@@ -29,15 +32,26 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  List<String> questions = [
-    'ganesh surname is adhikari',
-    'anish surname is gc',
-    'krishna\'s surname is chaudahry'
-  ];
-  int questionNumber = 0;
+
+  void checkAnswer(userPickedanswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+
+    setState(() {
+      if (userPickedanswer == correctAnswer) {
+        scoreKeeper.add(Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
+      } else {
+        scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+      }
+      quizBrain.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // print(q1.questionText);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,7 +62,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10),
             child: Center(
               child: Text(
-                questions[questionNumber % questions.length],
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 20.0,
@@ -67,13 +81,16 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.green,
               child: TextButton(
                 onPressed: () {
+                  checkAnswer(true);
+                  // if (correctAnswer == true) {
+                  //   print('u got it right');
+                  // } else {
+                  //   print('u got it wrong');
+                  // }
+
                   setState(() {
-                    questionNumber++;
+                    quizBrain.nextQuestion();
                   });
-                  scoreKeeper.add(const Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ));
                 },
                 child: const Text(
                   "True",
@@ -95,15 +112,10 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.red,
               child: TextButton(
                 onPressed: () {
+                  checkAnswer(false);
                   setState(() {
-                    questionNumber++;
+                    quizBrain.nextQuestion();
                   });
-                  scoreKeeper.add(
-                    const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                  );
                 },
                 child: const Text(
                   "False",
